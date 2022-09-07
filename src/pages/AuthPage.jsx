@@ -4,18 +4,26 @@ import {loginWs,signupWs} from '../services/auth-ws';
 import { Button, Form, Input } from 'antd';
 import {FormItem } from '../components'
 
-
-
  const AuthPage =()=>{
   const location = useLocation();
   console.log("qe location", location)
 
   const onFinish = (values) => {
-    console.log('Success:', values);
-    loginWs(values).then(res=>{
-      console.log("la respuesta", res)
+    if(location.pathname ==="/signup" && values.password !== values.confirmPassword){
+      return alert ("las contraseñas no coinciden.")
+    }
+
+    const service = location.pathname ==="/signup" ? signupWs(values) : loginWs(values)
+
+    service.then(res=>{
+     const {data,status,errorMessage} = res
+if(status){
+  alert ("pudiste entrar")
+  return;
+} else {
+  alert (errorMessage)
+}
     })
-    .catch(err => {console.log("el error",err)})
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -125,8 +133,15 @@ return (
 
 
 
-<p> {location.pathname === "/signup" ? "Si ya" : "No"} tienes cuenta
- <Link to="/login">ingresa!</Link></p>
+        {location.pathname === "/signup" ? (
+        <p>
+          Si ya tienes cuenta, <Link to="/login">ingresa</Link>
+        </p>
+      ) : (
+        <p>
+          Si aún no tienes cuenta, <Link to="/signup">registrate</Link>
+        </p>
+      )}
 
     </Form>
   
