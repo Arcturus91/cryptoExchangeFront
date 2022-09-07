@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //validate if app is running on producion or local
 
-const isProduction = process.end.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 //2 environment
                                                                         //"http://localhost:5005/api/auth/login"
