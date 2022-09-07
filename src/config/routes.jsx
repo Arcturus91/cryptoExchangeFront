@@ -8,11 +8,11 @@ const routes = (props) => {
     },
     {
       path: "/login",
-      element: <AuthPage /> //login
+      element: <AuthPage {...props} /> //login
     },
     {
       path: "/signup",
-      element: <AuthPage /> //login
+      element: <AuthPage {...props} /> //login
     },
   ];
 };

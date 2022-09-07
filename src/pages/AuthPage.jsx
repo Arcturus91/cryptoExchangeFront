@@ -4,9 +4,9 @@ import {loginWs,signupWs} from '../services/auth-ws';
 import { Button, Form, Input } from 'antd';
 import {FormItem } from '../components'
 
- const AuthPage =()=>{
+ const AuthPage =(props)=>{
   const location = useLocation();
-  console.log("qe location", location)
+  console.log("props", props)
 
   const onFinish = (values) => {
     if(location.pathname ==="/signup" && values.password !== values.confirmPassword){
@@ -17,7 +17,12 @@ import {FormItem } from '../components'
 
     service.then(res=>{
      const {data,status,errorMessage} = res
+     //cundo yo me logee, mi back end me va a responder con data.user. Yo se que es data.user xq así lo envio desde el backend.
+
+
 if(status){
+  console.log("data",data.user)
+props.authentication(data.user)
   alert ("pudiste entrar")
   return;
 } else {
