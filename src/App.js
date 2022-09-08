@@ -21,8 +21,12 @@ function App() {
       onOk(){
         logoutWs().then((res) => {
           const { data, status, errorMessage } = res;
+
           if (status) {
-            alert(data.successMessage);
+            Modal.success({
+              content:data.successMessage,
+            })
+            
             setUser(null);
           } else {
             alert(errorMessage);
