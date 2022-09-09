@@ -5,12 +5,12 @@ import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components";
 import { logoutWs } from "./services/auth-ws";
 import { Modal } from "antd";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //aqui se ponen los sockets
 
 function App() {
   const [user, setUser] = useState(null);
-
+const navigate = useNavigate()
   function authentication(user) {
     setUser(user);
   }
@@ -26,7 +26,7 @@ function App() {
             Modal.success({
               content:data.successMessage,
             })
-            
+            navigate('/')
             setUser(null);
           } else {
             alert(errorMessage);

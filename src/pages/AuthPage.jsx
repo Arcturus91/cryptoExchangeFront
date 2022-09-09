@@ -1,11 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginWs, signupWs } from "../services/auth-ws";
 import { Form, Modal } from "antd";
 import { FormItem } from "../components";
 
 const AuthPage = (props) => {
   const location = useLocation();
-  console.log("props", props);
+  
+  const navigate = useNavigate();
 
   const onFinish = (values) => {
     if (
@@ -27,7 +28,7 @@ const AuthPage = (props) => {
         Modal.success({
           content:"Todo exitoso. Ya entraste"
         })
-        
+        navigate('/profile') //esto es para irnos al profile cuando te logeas/suscribes
         return;
       } else {
         Modal.error({ content: errorMessage });
