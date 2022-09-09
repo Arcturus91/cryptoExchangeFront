@@ -7,9 +7,24 @@ import { logoutWs } from "./services/auth-ws";
 import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 //aqui se ponen los sockets
+import {binanceSocket} from './services/binanceSocket-ws'
 
 function App() {
   const [user, setUser] = useState(null);
+const [priceETH,setPriceETH] = useState();
+
+useEffect(
+  () => {
+  binanceSocket().then((res)=>{
+    
+    const newPriceETH =Number(res.data.closingPrice) + 0.0001
+  
+    setPriceETH(newPriceETH.toFixed(2)) //es there a way to improve this? useEffects stops when noticing the same price.
+  })},
+  
+  [priceETH])
+
+
 const navigate = useNavigate()
   function authentication(user) {
     setUser(user);
@@ -45,6 +60,8 @@ const navigate = useNavigate()
           )
         )}
       </Routes>
+      <h1>Precio del Ethereum {priceETH}</h1>
+
     </div>
   );
 }

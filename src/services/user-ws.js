@@ -14,3 +14,7 @@ export const createETHwalletWs = (data)=> api.post("/user/my-profile/add-eth-wal
 .then(successStatus)
 .catch(internalServerError)
 
+export const buyCripto = (data)=> api.post("/user/my-profile/buy",data)
+.then(successStatus)
+.catch(internalServerError)
+

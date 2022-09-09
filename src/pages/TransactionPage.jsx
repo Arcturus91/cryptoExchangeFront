@@ -1,16 +1,40 @@
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu } from "antd";
+import {DesktopOutlined,FileOutlined,
+  PieChartOutlined,TeamOutlined,UserOutlined,} from "@ant-design/icons";
+import { Breadcrumb, Layout, Menu, Button,Form, Input, Modal } from "antd";
 import React, { useState } from "react";
+import { buyCripto } from "../services/user-ws";
+import { useNavigate} from 'react-router-dom'
+
 const { Header, Content, Footer, Sider } = Layout;
 
 function TransactionPage(props) {
-    console.log('yo soy el props', props.user.firstName)
+const navigate = useNavigate();
+    console.log('yo soy el props', props.user)
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+buyCripto(values).then((res) => {
+    const { data, status, errorMessage } = res;
+    if (status) {
+      console.log("data", data.user);
+      Modal.success({
+        content: "Todo exitoso. Se compró la cripto",
+      });
+      navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+      return;
+    } else {
+      Modal.error({ content: errorMessage });
+    }
+  });
+
+
+      };
+    
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
+
+
   function getItem(label, key, icon, children) {
     return {
       key,
@@ -83,7 +107,62 @@ function TransactionPage(props) {
               minHeight: 360,
             }}
           >
-            Bill is a cat.
+
+
+<Form
+      name="buyCripto"
+      labelCol={{
+        span: 8,
+      }}
+      wrapperCol={{
+        span: 16,
+      }}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+    >
+      <Form.Item
+        label="Selecciona la Criptomoneda que quieres comprar"
+        name="cryptoName"
+        rules={[
+          {
+            required: true,
+            message: 'Por favor, selecciona una cripto',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Cantidad de Cripto a comprar"
+        name="cryptoBuyAmount"
+        rules={[
+          {
+            required: true,
+            message: 'Por favor, ingresa la cantidad de cripto a comprar',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Comprar
+        </Button>
+      </Form.Item>
+    </Form>
+
+          
           </div>
         </Content>
         <Footer
