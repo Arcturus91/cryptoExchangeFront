@@ -1,7 +1,8 @@
 import { Layout, Descriptions, Avatar } from "antd";
 import { Button, Form, Input, Modal } from "antd";
 import { createBankAccWs, createBTCwalletWs,createETHwalletWs } from "../services/user-ws";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
+ import {UserOutlined} from '@ant-design/icons'
 const { Content } = Layout;
 
 function ProfilePage(props) {
@@ -9,8 +10,6 @@ function ProfilePage(props) {
 
   const onFinish = (values) => {
     const { bankAccount, walletBTCAddress, walletETHAddress } = values; 
-    
-    
     if (bankAccount) {
       createBankAccWs(values).then((res) => {
         const { data, status, errorMessage } = res;
@@ -55,9 +54,6 @@ function ProfilePage(props) {
         }
       });
     }
-
-
-
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -104,7 +100,7 @@ function ProfilePage(props) {
             },
           ]}
         >
-          <Input />
+          <Input maxLength={14} placeholder="default size" prefix={<UserOutlined />} />
         </Form.Item>
 
         <Form.Item
@@ -200,6 +196,10 @@ function ProfilePage(props) {
             Submit
           </Button>
         </Form.Item>
+
+        <p>
+          Si ya tienes tus cuentas y wallets, <Link to="/transactions">opera</Link>
+        </p>
       </Form>
     </Content>
   );

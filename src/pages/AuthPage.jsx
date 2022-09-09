@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginWs, signupWs } from "../services/auth-ws";
-import { Form, Modal } from "antd";
+import { Form, Modal,Input } from "antd";
 import { FormItem } from "../components";
+import { UserOutlined } from '@ant-design/icons';
 
 const AuthPage = (props) => {
   const location = useLocation();
@@ -60,10 +61,12 @@ const AuthPage = (props) => {
         rules={[
           {
             required: true,
-            message: "Please input your email!",
+            message: "Porfavor, agrega tu correo electrónico",
           },
-        ]}
-      />
+        ]}        
+      > 
+      <Input placeholder="default size" prefix={<UserOutlined />} />
+      </FormItem>
 
       <FormItem
         label="Password"
@@ -72,7 +75,7 @@ const AuthPage = (props) => {
         rules={[
           {
             required: true,
-            message: "Please input your password!",
+            message: "Porfavor, agrega tu contraseña",
           },
         ]}
       />
