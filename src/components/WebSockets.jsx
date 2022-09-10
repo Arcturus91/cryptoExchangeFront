@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 //aqui se ponen los sockets
-import { binanceSocketETH, binanceSocketBTC } from "../services/binanceSocket-ws";
+import { binanceSocketETH, binanceSocketBTC,stopWebSocket } from "../services/binanceApi-ws";
 
 const WebSockets = ()=>{
 
@@ -9,7 +9,7 @@ const WebSockets = ()=>{
     const [socketCalls, setsocketCalls] = useState(0);
   
     useEffect(() => {
-        
+
       binanceSocketETH().then((res) => {
         const newPriceETH = (Number(res.data.closingPrice)).toFixed(2);
         setPriceETH(newPriceETH);
@@ -22,10 +22,14 @@ const WebSockets = ()=>{
         setsocketCalls((prevValue) => prevValue +1);
         console.log(newPriceBTC, socketCalls);
       })});
+
+     return ()=>{
+        stopWebSocket()
+      } 
   
     }, [priceETH, priceBTC, socketCalls]);
   
-   
+   // should we convert it to async? also, how do we close the socket? 
 
 
     return (

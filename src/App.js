@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import routes from "./config/routes";
 import { Routes, Route } from "react-router-dom";
-import { Navbar,WebSockets } from "./components";
+import { Navbar } from "./components";
 import { logoutWs } from "./services/auth-ws";
 import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +53,7 @@ function App() {
         )}
       </Routes>
       
-<WebSockets/>
+
 
     </div>
   );

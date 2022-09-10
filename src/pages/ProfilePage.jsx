@@ -39,7 +39,8 @@ function ProfilePage(props) {
         }
       });
     }
-    else if (walletETHAddress) { //0x29a3650daa254a17846538caeb25e3b0c2fbdb05
+    else if (walletETHAddress) { 
+      //0x29a3650daa254a17846538caeb25e3b0c2fbdb05
       createETHwalletWs(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {

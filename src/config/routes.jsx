@@ -1,10 +1,11 @@
+import { WebSockets } from '../components';
 import {AuthPage,ProfilePage,TransactionPage} from '../pages'
 
 const routes = (props) => {
   return [
     {
       path: "/", //homepage
-      element: <h1>Este es el home</h1>,
+      element: <WebSockets/>,
     },
     {
       path: "/login",

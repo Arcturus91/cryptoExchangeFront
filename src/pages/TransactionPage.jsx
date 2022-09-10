@@ -4,6 +4,7 @@ import { Breadcrumb, Layout, Menu, Button,Form, Input, Modal } from "antd";
 import React, { useState } from "react";
 import { buyCripto } from "../services/user-ws";
 import { useNavigate} from 'react-router-dom'
+import { SpotPrice } from "../components";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -107,6 +108,8 @@ buyCripto(values).then((res) => {
               minHeight: 360,
             }}
           >
+
+<SpotPrice/>
 
 
 <Form
