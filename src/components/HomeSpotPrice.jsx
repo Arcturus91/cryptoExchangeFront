@@ -1,7 +1,7 @@
 import { btcSpot,ethSpot } from "../services/binanceApi-ws";
 import { useState, useEffect } from "react";
 
-const SpotPriceHome= ()=>{
+const HomeSpotPrice= ()=>{
 
 const [currentPriceBTC, setCurrentPriceBTC] = useState()
 const [currentPriceETH, setCurrentPriceETH] = useState()
@@ -40,4 +40,4 @@ useEffect(() => {
     )
 }
 
-export default SpotPriceHome;
+export default HomeSpotPrice;

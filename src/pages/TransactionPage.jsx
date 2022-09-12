@@ -5,6 +5,12 @@ import {
   TeamOutlined,
   UserOutlined,
   UploadOutlined,
+  DollarOutlined,
+  WalletOutlined,
+  FireOutlined,
+  AppstoreOutlined,
+  MessageOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -19,70 +25,46 @@ import {
 } from "antd";
 import React, { useState } from "react";
 import { buyCripto } from "../services/user-ws";
-import { useNavigate } from "react-router-dom";
-import { SpotPrice } from "../components";
+import { Link, useNavigate } from "react-router-dom";
+import { FormItem, SpotPrice } from "../components";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-// --------> function init 
+// --------> function init
 
 function TransactionPage(props) {
-  const [buyOrSell, setbuyOrSell] = useState("buy");
+  const [buyOrSell, setbuyOrSell] = useState("Buy");
   const [collapsed, setCollapsed] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
   const navigate = useNavigate();
-  console.log("yo soy el props", props.user);
+  console.log("yo soy el props", props);
 
   const onFinish = (values) => {
     console.log("Success:", values);
 
-    if(buyOrSell === "buy"){
-    buyCripto(values).then((res) => {
-      const { data, status, errorMessage } = res;
-      if (status) {
-        console.log("data", data.user);
-        Modal.success({
-          content: "Todo exitoso. Se compró la cripto",
-        });
-        navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
-        return;
-      } else {
-        Modal.error({ content: errorMessage });
-      }
-    });
-  } 
+    if (buyOrSell === "buy") {
+      buyCripto(values).then((res) => {
+        const { data, status, errorMessage } = res;
+        if (status) {
+          console.log("data", data.user);
+          Modal.success({
+            content: "Todo exitoso. Se compró la cripto",
+          });
+          navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+          return;
+        } else {
+          Modal.error({ content: errorMessage });
+        }
+      });
+    }
 
-  //AQUI iria el ELSE para el SELL
+    //AQUI iria el ELSE para el SELL
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  function getItem(label, key, icon, children) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    };
-  }
-
-  const items = [
-    getItem("Option 1", "1", <PieChartOutlined />),
-    getItem("Option 2", "2", <DesktopOutlined />),
-    getItem("User", "sub1", <UserOutlined />, [
-      getItem("Tom", "3"),
-      getItem("Bill", "4"),
-      getItem("Alex", "5"),
-    ]),
-    getItem("Team", "sub2", <TeamOutlined />, [
-      getItem("Team 1", "6"),
-      getItem("Team 2", "8"),
-    ]),
-    getItem("Files", "9", <FileOutlined />),
-  ];
 
   const configUpload = {
     name: "image",
@@ -103,7 +85,13 @@ function TransactionPage(props) {
     },
   };
 
-// ----> RETURN PART
+const operationHandler = (e) =>{
+  setbuyOrSell(e)
+}
+
+
+
+  // ----> RETURN PART
 
   return (
     <Layout
@@ -117,13 +105,42 @@ function TransactionPage(props) {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="logo" />
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={["1"]}
-          mode="inline"
-          items={items}
-        />
+        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+          <Menu.Item icon={<ProfileOutlined />} />
+
+          <Menu.Item key="1" onClick={()=>operationHandler("Buy")} icon={<DollarOutlined />}>
+            Compra Criptos
+          </Menu.Item>
+
+          <Menu.Item
+            key="2"
+            onClick={()=>operationHandler("Sell")}
+            icon={<DollarOutlined />}
+          >
+            Vende Criptos
+          </Menu.Item>
+
+          <Menu.Item key="3" icon={<WalletOutlined />}>
+            <Link to="/profile">Mis operaciones</Link>
+          </Menu.Item>
+
+          <Menu.Item key="4" icon={<DollarOutlined />}>
+            <Link to="/">Noticias de bolsa</Link>
+          </Menu.Item>
+          <Menu.Item key="5" icon={<FireOutlined />}>
+            <Link to="/">Noticias de criptos</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            onClick={props.handleLogout}
+            key="6"
+            icon={<AppstoreOutlined />}
+          >
+            Cerrar sesión
+          </Menu.Item>
+        </Menu>
       </Sider>
+
       <Layout className="site-layout">
         <Header
           className="site-layout-background"
@@ -141,7 +158,7 @@ function TransactionPage(props) {
               margin: "16px 0",
             }}
           >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
+            <Breadcrumb.Item>Usuario</Breadcrumb.Item>
             <Breadcrumb.Item>{props.user.firstName}</Breadcrumb.Item>
           </Breadcrumb>
           <div
@@ -151,77 +168,76 @@ function TransactionPage(props) {
               minHeight: 360,
             }}
           >
+            <SpotPrice  />
 
-            <SpotPrice /> 
+            {buyOrSell === "Buy" ? (
+              <>
+                <Form
+                  name="buyCripto"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+                  autoComplete="off"
+                >
+                  <Form.Item
+                    label="Selecciona la Criptomoneda que quieres comprar"
+                    name="cryptoName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor, selecciona una cripto",
+                      },
+                    ]}
+                  >
+                    <Input
+                    
+                    />
+                  </Form.Item>
 
-
-{buyOrSell === "buy" ?
-<>
-            <Form
-              name="buyCripto"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="Selecciona la Criptomoneda que quieres comprar"
-                name="cryptoName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor, selecciona una cripto",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="Cantidad de Cripto a comprar"
-                name="cryptoBuyAmount"
-                rules={[
-                  {
-                    required: true,
-                    message:
-                      "Por favor, ingresa la cantidad de cripto a comprar",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              >
-                <Button type="primary" htmlType="submit">
-                  Comprar
-                </Button>
-              </Form.Item>
-              </Form>
-            </>
-            :
-             <>
-              <h1>Hello world</h1>
-            </>}
+                  <Form.Item
+                    label="Cantidad de Cripto a comprar"
+                    name="cryptoBuyAmount"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor, ingresa la cantidad de cripto a comprar",
+                      },
+                    ]}
+                  >
+                    <Input
+                    />
+                  </Form.Item>
 
 
-              <Upload {...configUpload}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                    }}
+                  >
+                    <Button type="primary" htmlType="submit">
+                      Comprar
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </>
+            ) : (
+              <>
+                <h1>Hello world</h1>
+              </>
+            )}
 
+            <Upload {...configUpload}>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
           </div>
         </Content>
         <Footer

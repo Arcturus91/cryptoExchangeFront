@@ -36,6 +36,7 @@ function App() {
       },
     });
   }
+  
   return (
     <div className="App">
       <Navbar user={user} handleLogout={handleLogout} />

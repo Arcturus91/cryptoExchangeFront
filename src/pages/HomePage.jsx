@@ -1,5 +1,5 @@
 
-import {SpotPriceHome } from '../components';
+import {HomeSpotPrice } from '../components';
 
 
 const HomePage = () =>{
@@ -8,7 +8,7 @@ const HomePage = () =>{
     return (
         <div>
             <h1>hola mundo</h1>
-            <SpotPriceHome/>
+            <HomeSpotPrice/>
         </div>
     )
 }
