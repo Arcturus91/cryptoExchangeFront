@@ -1,40 +1,59 @@
-import {DesktopOutlined,FileOutlined,
-  PieChartOutlined,TeamOutlined,UserOutlined,} from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, Button,Form, Input, Modal } from "antd";
+import {
+  DesktopOutlined,
+  FileOutlined,
+  PieChartOutlined,
+  TeamOutlined,
+  UserOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import {
+  Breadcrumb,
+  Layout,
+  Menu,
+  Button,
+  Form,
+  Input,
+  Modal,
+  message,
+  Upload,
+} from "antd";
 import React, { useState } from "react";
 import { buyCripto } from "../services/user-ws";
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { SpotPrice } from "../components";
 
 const { Header, Content, Footer, Sider } = Layout;
 
+// --------> function init 
+
 function TransactionPage(props) {
-const navigate = useNavigate();
-    console.log('yo soy el props', props.user)
+  const [buyOrSell, setbuyOrSell] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
-buyCripto(values).then((res) => {
-    const { data, status, errorMessage } = res;
-    if (status) {
-      console.log("data", data.user);
-      Modal.success({
-        content: "Todo exitoso. Se compró la cripto",
-      });
-      navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
-      return;
-    } else {
-      Modal.error({ content: errorMessage });
-    }
-  });
+  const navigate = useNavigate();
+  console.log("yo soy el props", props.user);
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    buyCripto(values).then((res) => {
+      const { data, status, errorMessage } = res;
+      if (status) {
+        console.log("data", data.user);
+        Modal.success({
+          content: "Todo exitoso. Se compró la cripto",
+        });
+        navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+        return;
+      } else {
+        Modal.error({ content: errorMessage });
+      }
+    });
+  };
 
-      };
-    
-      const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
-
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   function getItem(label, key, icon, children) {
     return {
@@ -60,7 +79,26 @@ buyCripto(values).then((res) => {
     getItem("Files", "9", <FileOutlined />),
   ];
 
-  const [collapsed, setCollapsed] = useState(false);
+  const configUpload = {
+    name: "image",
+    action: "http://localhost:5005/api/user/my-profile/singleUpload",
+
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+
+      if (info.file.status === "done") {
+        console.log("que es info", info);
+        setImageUrl(info.file.response.url.uri);
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
+// ----> RETURN PART
 
   return (
     <Layout
@@ -109,63 +147,77 @@ buyCripto(values).then((res) => {
             }}
           >
 
-<SpotPrice/>
+            <SpotPrice /> 
 
 
-<Form
-      name="buyCripto"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="Selecciona la Criptomoneda que quieres comprar"
-        name="cryptoName"
-        rules={[
-          {
-            required: true,
-            message: 'Por favor, selecciona una cripto',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+{buyOrSell === true ?
+<>
+            <Form
+              name="buyCripto"
+              labelCol={{
+                span: 8,
+              }}
+              wrapperCol={{
+                span: 16,
+              }}
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item
+                label="Selecciona la Criptomoneda que quieres comprar"
+                name="cryptoName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor, selecciona una cripto",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
 
-      <Form.Item
-        label="Cantidad de Cripto a comprar"
-        name="cryptoBuyAmount"
-        rules={[
-          {
-            required: true,
-            message: 'Por favor, ingresa la cantidad de cripto a comprar',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+              <Form.Item
+                label="Cantidad de Cripto a comprar"
+                name="cryptoBuyAmount"
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      "Por favor, ingresa la cantidad de cripto a comprar",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
 
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Comprar
-        </Button>
-      </Form.Item>
-    </Form>
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Comprar
+                </Button>
+              </Form.Item>
+              </Form>
+            </>
+            :
+            
+             <>
+              <h1>Hello world</h1>
+            </>}
 
-          
+
+              <Upload {...configUpload}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            
+
           </div>
         </Content>
         <Footer
