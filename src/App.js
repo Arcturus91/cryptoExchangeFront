@@ -11,12 +11,6 @@ import { useNavigate } from "react-router-dom";
 function App() {
   const [user, setUser] = useState(null);
 
-  
-
-
-
-
-
   const navigate = useNavigate();
   function authentication(user) {
     setUser(user);
@@ -60,3 +54,6 @@ function App() {
 }
 
 export default App;
+
+
+//<KeyOutlined />  < /> <LoadingOutlined /> LockOutlined

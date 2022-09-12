@@ -2,7 +2,14 @@ import { Menu } from "antd";
 import {
   MailOutlined,
   AppstoreOutlined,
+  SmileOutlined,
   SettingOutlined,
+  WalletOutlined,
+  UserOutlined,
+  FireOutlined,
+  LockOutlined,
+  DollarOutlined,
+  LaptopOutlined
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -10,28 +17,32 @@ const Navbar = ({ user, handleLogout }) => (
   <Menu mode="horizontal" defaultSelectedKeys={["mail"]}>
     {!user && 
       <>
-        <Menu.Item key="login" icon={<MailOutlined />}>
+        <Menu.Item key="login" icon={<LaptopOutlined />}>
           <Link to="/login">Iniciar sesión</Link> /
         </Menu.Item>
 
-        <Menu.Item key="signup" icon={<MailOutlined />}>
+        <Menu.Item key="signup" icon={<UserOutlined />}>
           <Link to="/signup">Regístrate</Link>
         </Menu.Item>
       </>
     }
 
     {user && (
-      <Menu.SubMenu key="user" title="Mi perfil" icon={<SettingOutlined />}>
-        <Menu.Item key="two" icon={<AppstoreOutlined />}>
-          Navigation Two
+      <Menu.SubMenu key="user" title={`Bienvenido ${user.firstName} ${user.lastName}`} icon={<UserOutlined />}>
+        <Menu.Item key="two" icon={<SmileOutlined />}>
+        <Link to="/profile">Mi perfil</Link>
         </Menu.Item>
-        <Menu.Item key="three" icon={<AppstoreOutlined />}>
-          Navigation Three
+        <Menu.Item key="three" icon={<WalletOutlined />}>
+        <Link to="/">Mis operaciones</Link>
         </Menu.Item>
-        <Menu.ItemGroup title="Item Group">
-          <Menu.Item key="four" icon={<AppstoreOutlined />}>
-            Navigation Four
+        <Menu.ItemGroup title="Noticias financieras">
+          <Menu.Item key="four" icon={<DollarOutlined />}>
+          <Link to="/">Noticias de bolsa</Link>
           </Menu.Item>
+          <Menu.Item key="five" icon={<FireOutlined />}>
+          <Link to="/">Noticias de criptos</Link>
+          </Menu.Item>
+          </Menu.ItemGroup>
           <Menu.Item
             onClick={handleLogout}
             key="five"
@@ -39,7 +50,7 @@ const Navbar = ({ user, handleLogout }) => (
           >
             Cerrar sesión
           </Menu.Item>
-        </Menu.ItemGroup>
+        
       </Menu.SubMenu>
     )}
   </Menu>

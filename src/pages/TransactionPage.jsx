@@ -27,7 +27,7 @@ const { Header, Content, Footer, Sider } = Layout;
 // --------> function init 
 
 function TransactionPage(props) {
-  const [buyOrSell, setbuyOrSell] = useState(false);
+  const [buyOrSell, setbuyOrSell] = useState("buy");
   const [collapsed, setCollapsed] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -36,6 +36,8 @@ function TransactionPage(props) {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+
+    if(buyOrSell === "buy"){
     buyCripto(values).then((res) => {
       const { data, status, errorMessage } = res;
       if (status) {
@@ -49,6 +51,9 @@ function TransactionPage(props) {
         Modal.error({ content: errorMessage });
       }
     });
+  } 
+
+  //AQUI iria el ELSE para el SELL
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -150,7 +155,7 @@ function TransactionPage(props) {
             <SpotPrice /> 
 
 
-{buyOrSell === true ?
+{buyOrSell === "buy" ?
 <>
             <Form
               name="buyCripto"
@@ -207,7 +212,6 @@ function TransactionPage(props) {
               </Form>
             </>
             :
-            
              <>
               <h1>Hello world</h1>
             </>}
