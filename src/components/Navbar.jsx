@@ -38,20 +38,20 @@ const Navbar = ({ user, handleLogout }) => (
         </Menu.Item>
         
 
-        <Menu.Item key="three" icon={<WalletOutlined />}>
-        <Link to="/">Mis operaciones</Link>
+        <Menu.Item key="four" icon={<WalletOutlined />}>
+        <Link to="/operations">Mis operaciones</Link>
         </Menu.Item>
         <Menu.ItemGroup title="Noticias financieras">
-          <Menu.Item key="four" icon={<DollarOutlined />}>
+          <Menu.Item key="five" icon={<DollarOutlined />}>
           <Link to="/">Noticias de bolsa</Link>
           </Menu.Item>
-          <Menu.Item key="five" icon={<FireOutlined />}>
+          <Menu.Item key="six" icon={<FireOutlined />}>
           <Link to="/">Noticias de criptos</Link>
           </Menu.Item>
           </Menu.ItemGroup>
           <Menu.Item
             onClick={handleLogout}
-            key="five"
+            key="seven"
             icon={<AppstoreOutlined />}
           >
             Cerrar sesión

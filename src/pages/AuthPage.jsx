@@ -121,7 +121,7 @@ const AuthPage = (props) => {
       ) : null}
 
       <FormItem
-        button_text="Button"
+        button_text="Enviar"
         type="button"
         wrapperCol={{
           offset: 8,

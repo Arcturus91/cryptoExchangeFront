@@ -33,9 +33,9 @@ useEffect(() => {
         <div>
 
 
-            <h1>El precio actual del BTC es: {currentPriceBTC}</h1>
+            <h1>El precio actual del BTC es: {currentPriceBTC} USD</h1>
            
-            <h1>El precio actual del ETH es: {currentPriceETH}</h1>
+            <h1>El precio actual del ETH es: {currentPriceETH} USD</h1>
         </div>
     )
 }

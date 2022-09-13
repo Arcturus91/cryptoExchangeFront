@@ -147,7 +147,7 @@ function ProfilePage(props) {
             },
           ]}
         >
-          <Input maxLength={14} prefix={<DollarOutlined />} />
+          <Input  prefix={<DollarOutlined />} />
         </Form.Item>
 
         <Form.Item
