@@ -4,7 +4,7 @@ import {
   WalletOutlined,
   FireOutlined,
   AppstoreOutlined,
-  ProfileOutlined,
+  ProfileOutlined,UserOutlined
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -135,7 +135,9 @@ const operationHandler = (e) =>{
       >
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item icon={<ProfileOutlined />} />
+          <Menu.Item key="0" icon={<UserOutlined />}>
+          <Link to="/profile">Mi perfil</Link>
+          </Menu.Item>
 
           <Menu.Item key="1" onClick={()=>operationHandler("Buy")} icon={<DollarOutlined />}>
             Compra Criptos
@@ -150,7 +152,7 @@ const operationHandler = (e) =>{
           </Menu.Item>
 
           <Menu.Item key="3" icon={<WalletOutlined />}>
-            <Link to="/profile">Mis operaciones</Link>
+            <Link to="/operations">Mis operaciones</Link>
           </Menu.Item>
 
           <Menu.Item key="4" icon={<DollarOutlined />}>

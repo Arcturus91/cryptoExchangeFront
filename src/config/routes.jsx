@@ -1,5 +1,5 @@
 
-import {AuthPage,ProfilePage,TransactionPage,HomePage, OperationsPage} from '../pages'
+import {AuthPage,ProfilePage,TransactionPage,HomePage, OperationsPage, AdminPage} from '../pages'
 
 const routes = (props) => {
   return [
@@ -26,6 +26,11 @@ const routes = (props) => {
     {
       path:"/operations",
       element:<OperationsPage {...props}/>
+    }
+    ,
+    {
+      path:"/admin",
+      element:<AdminPage {...props}/>
     }
 
   ];

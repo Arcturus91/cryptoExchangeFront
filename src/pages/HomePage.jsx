@@ -9,7 +9,6 @@ const HomePage = () =>{
         <div>
             <h1>Bienvenido</h1>
             <HomeSpotPrice/>
-            <OperationsTable/>
         </div>
 
 

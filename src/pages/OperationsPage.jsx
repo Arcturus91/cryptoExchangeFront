@@ -60,7 +60,7 @@ const OperationsPage = (props) => {
       <div>
       
       
-     <h1>Holi!</h1> 
+    
       
    <OperationsTable buys={buys} sells={sells}/>
       

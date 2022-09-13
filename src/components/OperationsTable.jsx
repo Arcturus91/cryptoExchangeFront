@@ -1,6 +1,6 @@
 
-import { Table } from 'antd';
-import Title from 'antd/lib/skeleton/Title';
+import { Table,Typography } from 'antd';
+const { Title, Paragraph, Text } = Typography;
 
 
 const OperationsTable = (props) => {

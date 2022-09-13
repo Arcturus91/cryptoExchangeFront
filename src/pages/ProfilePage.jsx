@@ -254,9 +254,16 @@ function ProfilePage(props) {
         </Form.Item>
 </Form></>:null}
 
-        <p>
-          <Link to="/transactions">Compra y vende Criptomonedas como todo un/una pro</Link>
+
+
+{props.user.role === "User"?(
+<p>
+          <Link to="/transactions">Compra y vende Criptomonedas como todo un pro</Link>
+        </p>)
+ :(<p>
+          <Link to="/admin">Administra el negocio como todo un pro</Link>
         </p>
+ )}
 
       
     </Content>
@@ -264,3 +271,5 @@ function ProfilePage(props) {
 }
 
 export default ProfilePage;
+
+
