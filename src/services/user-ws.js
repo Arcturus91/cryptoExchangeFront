@@ -18,3 +18,11 @@ export const buyCripto = (data)=> api.post("/user/my-profile/buy",data)
 .then(successStatus)
 .catch(internalServerError)
 
+export const sellCripto = (data)=> api.post("/user/my-profile/sell",data)
+.then(successStatus)
+.catch(internalServerError)
+
+export const registerReceipt = (data)=> api.post("/user/my-profile/uploadReceipt",data)
+.then(successStatus)
+.catch(internalServerError)
+

@@ -1,15 +1,27 @@
 import { Layout, Descriptions, Avatar } from "antd";
 import { Button, Form, Input, Modal } from "antd";
-import { createBankAccWs, createBTCwalletWs,createETHwalletWs } from "../services/user-ws";
-import { useNavigate, Link} from "react-router-dom";
- import {UserOutlined} from '@ant-design/icons'
+import {
+  createBankAccWs,
+  createBTCwalletWs,
+  createETHwalletWs,
+} from "../services/user-ws";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  UserOutlined,
+  DollarOutlined,
+  WalletOutlined,
+} from "@ant-design/icons";
 const { Content } = Layout;
 
 function ProfilePage(props) {
+  const noData = () => {
+    return <p style={{ color: "red" }}>Aún no registras cuenta ó billetera</p>;
+  };
+
   const navigate = useNavigate();
 
   const onFinish = (values) => {
-    const { bankAccount, walletBTCAddress, walletETHAddress } = values; 
+    const { bankAccount, walletBTCAddress, walletETHAddress } = values;
     if (bankAccount) {
       createBankAccWs(values).then((res) => {
         const { data, status, errorMessage } = res;
@@ -24,7 +36,8 @@ function ProfilePage(props) {
           Modal.error({ content: errorMessage });
         }
       });
-    } else if (walletBTCAddress) { //1B6n6MhWoCX94Yv8YC8a19SCaKEteKqEB7
+    } else if (walletBTCAddress) {
+      //1B6n6MhWoCX94Yv8YC8a19SCaKEteKqEB7
       createBTCwalletWs(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
@@ -38,8 +51,7 @@ function ProfilePage(props) {
           Modal.error({ content: errorMessage });
         }
       });
-    }
-    else if (walletETHAddress) { 
+    } else if (walletETHAddress) {
       //0x29a3650daa254a17846538caeb25e3b0c2fbdb05
       createETHwalletWs(values).then((res) => {
         const { data, status, errorMessage } = res;
@@ -70,18 +82,52 @@ function ProfilePage(props) {
 
       <Descriptions title="User Info">
         <Descriptions.Item label="Nombre:">{`${props.user.firstName} ${props.user.lastName}`}</Descriptions.Item>
-        <Descriptions.Item label="Email">{props.user.email}</Descriptions.Item>
-        <Descriptions.Item label="Role">{props.user.role}</Descriptions.Item>
+        <Descriptions.Item label="Correo electrónico:">
+          {props.user.email}
+        </Descriptions.Item>
+        <Descriptions.Item label="Rol:">{props.user.role}</Descriptions.Item>
+
+        {props.user.bankAccount ? (
+          <Descriptions.Item label="Cuenta Bancaria:">
+            {props.user.bankAccount}
+          </Descriptions.Item>
+        ) : (
+          <Descriptions.Item label="Cuenta Bancaria:">
+            {noData()}
+          </Descriptions.Item>
+        )}
+
+        {props.user.walletBTCAddress ? (
+          <Descriptions.Item label="Billetera de BTC:">
+            {props.user.walletBTCAddress}
+          </Descriptions.Item>
+        ) : (
+          <Descriptions.Item label="Billetera de BTC:">
+            {noData()}
+          </Descriptions.Item>
+        )}
+        {props.user.walletETHAddress ? (
+          <Descriptions.Item label="Billetera de ETH:">
+            {props.user.walletETHAddress}
+          </Descriptions.Item>
+        ) : (
+          <Descriptions.Item label="Billetera de ETH:">
+            {noData()}
+          </Descriptions.Item>
+        )}
       </Descriptions>
 
       {/* Form for creating bank account */}
-     <Form
+
+      {!props.user.bankAccount?
+      <>
+      <Form
         name="bank"
         labelCol={{
           span: 8,
         }}
         wrapperCol={{
-          span: 16,
+          span: 10,
         }}
         initialValues={{
           remember: true,
@@ -91,7 +137,7 @@ function ProfilePage(props) {
         autoComplete="off"
       >
         <Form.Item
-          label="Add bank account"
+          label="Agrega cuenta bancaria"
           name="bankAccount"
           rules={[
             {
@@ -101,30 +147,34 @@ function ProfilePage(props) {
             },
           ]}
         >
-          <Input maxLength={14} placeholder="default size" prefix={<UserOutlined />} />
+          <Input maxLength={14} prefix={<DollarOutlined />} />
         </Form.Item>
 
         <Form.Item
           wrapperCol={{
             offset: 8,
-            span: 16,
+            span: 10,
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Agregar
           </Button>
         </Form.Item>
       </Form>
+      </>:null}
 
       {/* Form for creating BTC account*/}
 
+
+      {!props.user.walletBTCAddress?
+      <>
       <Form
         name="btc"
         labelCol={{
           span: 8,
         }}
         wrapperCol={{
-          span: 16,
+          span: 10,
         }}
         initialValues={{
           remember: true,
@@ -143,29 +193,34 @@ function ProfilePage(props) {
             },
           ]}
         >
-          <Input />
+          <Input prefix={<WalletOutlined />} />
         </Form.Item>
 
         <Form.Item
           wrapperCol={{
             offset: 8,
-            span: 16,
+            span: 10,
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Agregar
           </Button>
         </Form.Item>
       </Form>
+      </>:null}
 
       {/* Form for creating ETH account */}
+
+      
+{!props.user.walletETHAddress?
+      <>
       <Form
         name="eth"
         labelCol={{
           span: 8,
         }}
         wrapperCol={{
-          span: 16,
+          span: 10,
         }}
         initialValues={{
           remember: true,
@@ -184,24 +239,26 @@ function ProfilePage(props) {
             },
           ]}
         >
-          <Input />
+          <Input prefix={<WalletOutlined />} />
         </Form.Item>
 
         <Form.Item
           wrapperCol={{
             offset: 8,
-            span: 16,
+            span: 10,
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Agregar
           </Button>
         </Form.Item>
+</Form></>:null}
 
         <p>
-          Si ya tienes tus cuentas y wallets, <Link to="/transactions">opera</Link>
+          <Link to="/transactions">Compra y vende Criptomonedas como todo un/una pro</Link>
         </p>
-      </Form>
+
+      
     </Content>
   );
 }

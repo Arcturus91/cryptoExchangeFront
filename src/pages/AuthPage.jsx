@@ -43,12 +43,12 @@ const AuthPage = (props) => {
 
   return (
     <Form
-      name="basic"
+      name="auth"
       labelCol={{
         span: 8,
       }}
       wrapperCol={{
-        span: 16,
+        span: 10,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -125,12 +125,10 @@ const AuthPage = (props) => {
         type="button"
         wrapperCol={{
           offset: 8,
-          span: 16,
+          span: 10,
         }}
       />
-      {/* <Button type="primary" htmlType="submit">
-          Submit
-        </Button> */}
+   
 
       {location.pathname === "/signup" ? (
         <p>

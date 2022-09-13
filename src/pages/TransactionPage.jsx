@@ -1,15 +1,9 @@
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
   UploadOutlined,
   DollarOutlined,
   WalletOutlined,
   FireOutlined,
   AppstoreOutlined,
-  MessageOutlined,
   ProfileOutlined,
 } from "@ant-design/icons";
 import {
@@ -21,21 +15,23 @@ import {
   Input,
   Modal,
   message,
-  Upload,
+  Upload, Select, Typography 
 } from "antd";
 import React, { useState } from "react";
-import { buyCripto } from "../services/user-ws";
+import { buyCripto, sellCripto,registerReceipt } from "../services/user-ws";
 import { Link, useNavigate } from "react-router-dom";
-import { FormItem, SpotPrice } from "../components";
+import {  SpotPrice } from "../components";
+const { Title, Paragraph, Text } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;
+const { Option } = Select;
 
 // --------> function init
 
 function TransactionPage(props) {
   const [buyOrSell, setbuyOrSell] = useState("Buy");
   const [collapsed, setCollapsed] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [uploadVerifier,setuploadVerifier] = useState(false)
 
   const navigate = useNavigate();
   console.log("yo soy el props", props);
@@ -43,7 +39,11 @@ function TransactionPage(props) {
   const onFinish = (values) => {
     console.log("Success:", values);
 
-    if (buyOrSell === "buy") {
+    if(!uploadVerifier=== true) {
+      return Modal.error({ content: "Debes subir el comprobante primero" })
+    }
+
+    if (buyOrSell === "Buy") {
       buyCripto(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
@@ -57,9 +57,22 @@ function TransactionPage(props) {
           Modal.error({ content: errorMessage });
         }
       });
-    }
+    } else if (buyOrSell === "Sell") {
+      sellCripto(values).then((res) => {
+        const { data, status, errorMessage } = res;
+        if (status) {
+          console.log("data", data.user);
+          Modal.success({
+            content: "Todo exitoso. Se vendió la cripto",
+          });
+          navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+          return;
+        } else {
+          Modal.error({ content: errorMessage });
+        }
+      });
 
-    //AQUI iria el ELSE para el SELL
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -76,9 +89,25 @@ function TransactionPage(props) {
       }
 
       if (info.file.status === "done") {
-        console.log("que es info", info);
-        setImageUrl(info.file.response.url.uri);
-        message.success(`${info.file.name} file uploaded successfully`);
+        console.log("que es info", info.file.response.url.uri);
+        
+       const receiptUrl =  info.file.response.url.uri
+        
+        registerReceipt({receiptUrl}).then((res) => {
+          console.log("yo soy el res del front", res)
+          const { data, status, errorMessage } = res;
+          if (status) {
+            console.log("data", data.user);
+            setuploadVerifier(true)
+            Modal.success({
+              content: "Todo exitoso. Se registró el comprobante. Ya puedes presionar comprar.",
+            });
+            return;
+          } else {
+            Modal.error({ content: errorMessage });
+          }
+        });
+        //message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
@@ -168,17 +197,33 @@ const operationHandler = (e) =>{
               minHeight: 360,
             }}
           >
-            <SpotPrice  />
+
+
+
+<SpotPrice  />
+
+<>
+            <Title level={2}>Cómo operar:</Title>
+            <Text strong>Primer paso: Verifica el precio y sube el comprobante </Text>
+</>
+            <Upload {...configUpload}>
+              <Button icon={<UploadOutlined />}>Sube el comprobante</Button>
+            </Upload>
+
 
             {buyOrSell === "Buy" ? (
               <>
+
+              <Text strong>Segundo paso: Selecciona la cripto, la cantidad y dale comprar </Text>
+
                 <Form
+
                   name="buyCripto"
                   labelCol={{
                     span: 8,
                   }}
                   wrapperCol={{
-                    span: 16,
+                    span: 10,
                   }}
                   initialValues={{
                     remember: true,
@@ -188,7 +233,7 @@ const operationHandler = (e) =>{
                   autoComplete="off"
                 >
                   <Form.Item
-                    label="Selecciona la Criptomoneda que quieres comprar"
+                    label="La Criptomoneda:"
                     name="cryptoName"
                     rules={[
                       {
@@ -197,9 +242,13 @@ const operationHandler = (e) =>{
                       },
                     ]}
                   >
-                    <Input
-                    
-                    />
+                    <Select
+            placeholder="Selecciona una de las opciones"
+            allowClear
+          >
+            <Option value="BTC">Bitcoin</Option>
+            <Option value="ETH">Ethereum</Option>
+          </Select>
                   </Form.Item>
 
                   <Form.Item
@@ -220,7 +269,7 @@ const operationHandler = (e) =>{
                   <Form.Item
                     wrapperCol={{
                       offset: 8,
-                      span: 16,
+                      span: 10,
                     }}
                   >
                     <Button type="primary" htmlType="submit">
@@ -231,13 +280,73 @@ const operationHandler = (e) =>{
               </>
             ) : (
               <>
-                <h1>Hello world</h1>
+              <Text strong>Segundo paso: Selecciona la cripto, la cantidad y dale vender </Text>
+
+              <Form
+
+name="sellCripto"
+labelCol={{
+  span: 8,
+}}
+wrapperCol={{
+  span: 10,
+}}
+initialValues={{
+  remember: true,
+}}
+onFinish={onFinish}
+onFinishFailed={onFinishFailed}
+autoComplete="off"
+>
+<Form.Item
+  label="La Criptomoneda:"
+  name="cryptoName"
+  rules={[
+    {
+      required: true,
+      message: "Por favor, selecciona una cripto",
+    },
+  ]}
+>
+  <Select
+placeholder="Selecciona una de las opciones"
+allowClear
+>
+<Option value="BTC">Bitcoin</Option>
+<Option value="ETH">Ethereum</Option>
+</Select>
+</Form.Item>
+
+<Form.Item
+  label="Cantidad de Cripto a vender"
+  name="cryptoSellAmount"
+  rules={[
+    {
+      required: true,
+      message: "Por favor, ingresa la cantidad de cripto a vender",
+    },
+  ]}
+>
+  <Input
+  />
+</Form.Item>
+
+
+<Form.Item
+  wrapperCol={{
+    offset: 8,
+    span: 10,
+  }}
+>
+  <Button type="primary" htmlType="submit">
+    Vender
+  </Button>
+</Form.Item>
+</Form>
               </>
             )}
 
-            <Upload {...configUpload}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
+            
           </div>
         </Content>
         <Footer

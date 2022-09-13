@@ -9,7 +9,7 @@ import {
   FireOutlined,
   LockOutlined,
   DollarOutlined,
-  LaptopOutlined
+  LaptopOutlined,ShoppingCartOutlined
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -32,6 +32,12 @@ const Navbar = ({ user, handleLogout }) => (
         <Menu.Item key="two" icon={<SmileOutlined />}>
         <Link to="/profile">Mi perfil</Link>
         </Menu.Item>
+
+        <Menu.Item key="three" icon={<ShoppingCartOutlined />}>
+        <Link to="/transactions">Compra/Vende</Link>
+        </Menu.Item>
+        
+
         <Menu.Item key="three" icon={<WalletOutlined />}>
         <Link to="/">Mis operaciones</Link>
         </Menu.Item>
