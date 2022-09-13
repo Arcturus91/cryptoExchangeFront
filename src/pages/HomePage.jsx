@@ -1,5 +1,5 @@
 
-import {HomeSpotPrice } from '../components';
+import {HomeSpotPrice, OperationsTable } from '../components';
 
 
 const HomePage = () =>{
@@ -7,8 +7,9 @@ const HomePage = () =>{
 
     return (
         <div>
-            <h1>hola GORDITA</h1>
+            <h1>Bienvenido</h1>
             <HomeSpotPrice/>
+            <OperationsTable/>
         </div>
 
 
@@ -20,3 +21,5 @@ const HomePage = () =>{
 
 
     export default HomePage;
+
+    

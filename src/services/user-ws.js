@@ -26,3 +26,6 @@ export const registerReceipt = (data)=> api.post("/user/my-profile/uploadReceipt
 .then(successStatus)
 .catch(internalServerError)
 
+export const getOperations = ()=> api.get("/user/my-profile/getOperations")
+.then(successStatus)
+.catch(internalServerError)
