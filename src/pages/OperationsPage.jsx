@@ -21,6 +21,7 @@ const OperationsPage = (props) => {
 
   const getBuys = () => {
     getOperations().then((res) => {
+
       const { data, status, errorMessage } = res;
       if (status) {
         
@@ -31,6 +32,7 @@ const OperationsPage = (props) => {
       } else {
         Modal.error({ content: errorMessage });
       }
+      
     });
   };
 

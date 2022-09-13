@@ -7,8 +7,6 @@ const OperationsTable = (props) => {
 
 
 
-console.log("yo soy props buy del table", props.buys)
-console.log("yo soy props sell del table", props.sells)
 
 const dataBuy = props.buys
 
