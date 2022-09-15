@@ -1,5 +1,15 @@
-import { Layout, Descriptions, Avatar } from "antd";
-import { Button, Form, Input, Modal } from "antd";
+import {
+  Layout,
+  Descriptions,
+  Avatar,
+  Button,
+  Form,
+  Input,
+  Modal,
+  Col,
+  Row, Typography
+} from "antd";
+
 import {
   createBankAccWs,
   createBTCwalletWs,
@@ -9,14 +19,19 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   UserOutlined,
   DollarOutlined,
-  WalletOutlined,
+  WalletOutlined,BarChartOutlined,ShoppingCartOutlined
 } from "@ant-design/icons";
+const {Title,Paragraph} = Typography
 const { Content } = Layout;
 
 function ProfilePage(props) {
   const noData = () => {
     return <p style={{ color: "red" }}>Aún no registras cuenta ó billetera</p>;
   };
+
+  const buyOperations = props.user._userBuys.length;
+  const sellOperations = props.user._userSells.length;
+ 
 
   const navigate = useNavigate();
 
@@ -74,198 +89,261 @@ function ProfilePage(props) {
   };
 
   return (
-    <Content>
+    <Content className="profile-page">
+
       <Avatar
-        size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+      style={{marginBottom:20}}
+        size={150}
         src={props.user.imageUrl}
       />
 
-      <Descriptions title="User Info">
-        <Descriptions.Item label="Nombre:">{`${props.user.firstName} ${props.user.lastName}`}</Descriptions.Item>
-        <Descriptions.Item label="Correo electrónico:">
-          {props.user.email}
-        </Descriptions.Item>
-        <Descriptions.Item label="Rol:">{props.user.role}</Descriptions.Item>
+<br/>
 
-        {props.user.bankAccount ? (
-          <Descriptions.Item label="Cuenta Bancaria:">
-            {props.user.bankAccount}
-          </Descriptions.Item>
-        ) : (
-          <Descriptions.Item label="Cuenta Bancaria:">
-            {noData()}
-          </Descriptions.Item>
-        )}
+{props.user.role === "User" ? (
+        
+        <Button type="primary" danger >
+                  <Link to="/transactions">
+                    Compra o Vende Criptos! <ShoppingCartOutlined />
+                  </Link></Button>
+        
+                
+              ) : (
+                <Button type="primary" danger>
+                  <Link to="/admin">Administración <BarChartOutlined /></Link>
+                  </Button>
+              )}
 
-        {props.user.walletBTCAddress ? (
-          <Descriptions.Item label="Billetera de BTC:">
-            {props.user.walletBTCAddress}
-          </Descriptions.Item>
-        ) : (
-          <Descriptions.Item label="Billetera de BTC:">
-            {noData()}
-          </Descriptions.Item>
-        )}
-        {props.user.walletETHAddress ? (
-          <Descriptions.Item label="Billetera de ETH:">
-            {props.user.walletETHAddress}
-          </Descriptions.Item>
-        ) : (
-          <Descriptions.Item label="Billetera de ETH:">
-            {noData()}
-          </Descriptions.Item>
-        )}
-      </Descriptions>
+      <Row gutter={[8, 8]} className="user-profile">
+        <Col span={12}>
+          <Descriptions bordered>
+            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Nombre">{`${props.user.firstName} ${props.user.lastName}`}</Descriptions.Item>
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions bordered>
+            {props.user.bankAccount ? (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Cuenta Bancaria">
+                {props.user.bankAccount}
+              </Descriptions.Item>
+            ) : (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Cuenta Bancaria">
+                {noData()}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions bordered>
+            {props.user.walletBTCAddress ? (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de BTC">
+                {props.user.walletBTCAddress}
+              </Descriptions.Item>
+            ) : (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de BTC">
+                {noData()}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions title="" bordered>
+            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Correo electrónico">
+              {props.user.email}
+            </Descriptions.Item>
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions title="" bordered>
+            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Rol">{props.user.role}</Descriptions.Item>
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions   bordered>
+            {props.user.walletETHAddress ? (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de ETH">
+                {props.user.walletETHAddress}
+              </Descriptions.Item>
+            ) : (
+              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de ETH">
+                {noData()}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </Col>
+
+      </Row>
 
       {/* Form for creating bank account */}
 
-      {!props.user.bankAccount?
-      <>
-      <Form
-        name="bank"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Agrega cuenta bancaria"
-          name="bankAccount"
-          rules={[
-            {
-              required: true,
-              message:
-                "Porfavor ingresa la cuenta bancaria. Necesitas 14 dígitos.",
-            },
-          ]}
-        >
-          <Input  prefix={<DollarOutlined />} />
-        </Form.Item>
+      {!props.user.bankAccount ? (
+        <>
+          <Form
+            name="bank"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 10,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="Agrega cuenta bancaria"
+              name="bankAccount"
+              rules={[
+                {
+                  required: true,
+                  message:
+                    "Porfavor ingresa la cuenta bancaria. Necesitas 14 dígitos.",
+                },
+              ]}
+            >
+              <Input prefix={<DollarOutlined />} />
+            </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 10,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Agregar
-          </Button>
-        </Form.Item>
-      </Form>
-      </>:null}
+            <Form.Item
+              wrapperCol={{
+                offset: 8,
+                span: 10,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Agregar
+              </Button>
+            </Form.Item>
+          </Form>
+        </>
+      ) : null}
 
       {/* Form for creating BTC account*/}
 
+      {!props.user.walletBTCAddress ? (
+        <>
+          <Form
+            name="btc"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 10,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="Agrega la dirección de tu billetera que admita BTC"
+              name="walletBTCAddress"
+              rules={[
+                {
+                  required: true,
+                  message: "Porfavor ingresa la dirección de la billetera",
+                },
+              ]}
+            >
+              <Input prefix={<WalletOutlined />} />
+            </Form.Item>
 
-      {!props.user.walletBTCAddress?
-      <>
-      <Form
-        name="btc"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Agrega la dirección de tu billetera que admita BTC"
-          name="walletBTCAddress"
-          rules={[
-            {
-              required: true,
-              message: "Porfavor ingresa la dirección de la billetera",
-            },
-          ]}
-        >
-          <Input prefix={<WalletOutlined />} />
-        </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 10,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Agregar
-          </Button>
-        </Form.Item>
-      </Form>
-      </>:null}
+            <Form.Item
+              wrapperCol={{
+                offset: 8,
+                span: 10,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Agregar
+              </Button>
+            </Form.Item>
+          </Form>
+        </>
+      ) : null}
 
       {/* Form for creating ETH account */}
 
+      {!props.user.walletETHAddress ? (
+        <>
+          <Form
+            name="eth"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 10,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="Agrega la dirección de tu billetera que admita ETH"
+              name="walletETHAddress"
+              rules={[
+                {
+                  required: true,
+                  message: "Porfavor ingresa la dirección de la billetera",
+                },
+              ]}
+            >
+              <Input prefix={<WalletOutlined />} />
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 8,
+                span: 10,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Agregar
+              </Button>
+            </Form.Item>
+          </Form>
+        </>
+      ) : null}
+
+
+
+<>
+<Title>Mis operaciones</Title>
       
-{!props.user.walletETHAddress?
-      <>
-      <Form
-        name="eth"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
+
+      <Paragraph>
+        {" "}
+        Desde que te creaste la cuenta, {props.user.firstName}, has comprado {buyOperations} veces y
+        vendido {sellOperations} con nuestro servicio. Gracias por confiar en
+        nosotros.
+      </Paragraph>
+
+      <Paragraph>Dale click al botón de abajo para ver todas tus operaciones.</Paragraph>
+
+      <Button type="primary"
       >
-        <Form.Item
-          label="Agrega la dirección de tu billetera que admita ETH"
-          name="walletETHAddress"
-          rules={[
-            {
-              required: true,
-              message: "Porfavor ingresa la dirección de la billetera",
-            },
-          ]}
-        >
-          <Input prefix={<WalletOutlined />} />
-        </Form.Item>
+        <Link to="/operations">
+            Mira el detalle detus operaciones <BarChartOutlined />
+          </Link> 
+      </Button>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 10,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Agregar
-          </Button>
-        </Form.Item>
-</Form></>:null}
+</>
 
 
 
-{props.user.role === "User"?(
-<p>
-          <Link to="/transactions">Compra y vende Criptomonedas como todo un pro</Link>
-        </p>)
- :(<p>
-          <Link to="/admin">Administra el negocio como todo un pro</Link>
-        </p>
- )}
 
-      
     </Content>
   );
 }

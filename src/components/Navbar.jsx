@@ -41,7 +41,7 @@ const Navbar = ({ user, handleLogout }) => (
     }
 
     {user && (
-      <Menu.SubMenu key="user" title={`Bienvenido ${user.firstName} ${user.lastName}`} icon={<UserOutlined />}>
+      <Menu.SubMenu key="user" title={`Bienvenido ${user.firstName} ${user.lastName}` } icon={<UserOutlined />} >
         <Menu.Item key="two" icon={<SmileOutlined />}>
         <Link to="/profile">Mi perfil</Link>
         </Menu.Item>
