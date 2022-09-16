@@ -7,6 +7,7 @@ const { Title, Paragraph } = Typography;
 const OperationsPage = (props) => {
   const buyOperations = props.user._userBuys.length;
   const sellOperations = props.user._userSells.length;
+  const role = props.user.role
 
   const [buys, setBuys] = useState();
   const [sells, setSells] = useState();
@@ -38,7 +39,7 @@ const OperationsPage = (props) => {
     <>
       <Title>Mis operaciones</Title>
 
-      <OperationsTable buys={buys} sells={sells} />
+      <OperationsTable buys={buys} sells={sells} role={role}/>
     </>
   );
 };

@@ -7,31 +7,86 @@ import {
   Input,
   Modal,
   Col,
-  Row, Typography
+  Row,
+  Typography,
+  Divider,
 } from "antd";
 
 import {
   createBankAccWs,
   createBTCwalletWs,
   createETHwalletWs,
+  getProfileWs,
 } from "../services/user-ws";
 import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
 import {
-  UserOutlined,
   DollarOutlined,
-  WalletOutlined,BarChartOutlined,ShoppingCartOutlined
+  WalletOutlined,
+  BarChartOutlined,
+  ShoppingCartOutlined,UpOutlined,DownOutlined
 } from "@ant-design/icons";
-const {Title,Paragraph} = Typography
+const { Title, Paragraph } = Typography;
 const { Content } = Layout;
 
+
 function ProfilePage(props) {
-  const noData = () => {
-    return <p style={{ color: "red" }}>Aún no registras cuenta ó billetera</p>;
+  const [expandBank, setExpandBank] = useState(false)
+  const [expandETH, setExpandETH] = useState(false)
+  const [expandBTC, setExpandBTC] = useState(false)
+
+  const noDataBank = () => {
+    return (<p style={{ color: "red" }}>Aún no registras cuenta ó billetera
+    
+    <Button size="small"
+            style={{
+              fontSize: 12, marginLeft:10
+            }}
+            onClick={() => {
+              setExpandBank(!expandBank);
+            }}
+          >
+            {expandBank ? <UpOutlined /> : <DownOutlined />} Agregar
+          </Button>
+    
+    
+    </p>)
+  };
+  const noDataBTC = () => {
+    return (<p style={{ color: "red" }}>Aún no registras cuenta ó billetera
+    
+    <Button size="small"
+            style={{
+              fontSize: 12, marginLeft:10
+            }}
+            onClick={() => {
+              setExpandBTC(!expandBTC);
+            }}
+          >
+            {expandBTC ? <UpOutlined /> : <DownOutlined />} Agregar
+          </Button>
+
+    </p>)
+  };
+  const noDataETH = () => {
+    return (<p style={{ color: "red" }}>Aún no registras cuenta ó billetera
+    <Button size="small"
+            style={{
+              fontSize: 12, marginLeft:10
+            }}
+            onClick={() => {
+              setExpandETH(!expandETH);
+            }}
+          >
+            {expandETH ? <UpOutlined /> : <DownOutlined />} Agregar
+          </Button>
+    
+    
+    </p>)
   };
 
   const buyOperations = props.user._userBuys.length;
   const sellOperations = props.user._userSells.length;
- 
 
   const navigate = useNavigate();
 
@@ -41,11 +96,17 @@ function ProfilePage(props) {
       createBankAccWs(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
-          console.log("data", data.user);
+          getProfileWs().then((res) => {
+            const { data, status, errorMessage } = res;
+            if (status) {
+              props.user.bankAccount = data.user.bankAccount;
+            }
+          });
+
           Modal.success({
             content: "Todo exitoso. Se agregó la cuenta",
           });
-          navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+          navigate("/transactions");
           return;
         } else {
           Modal.error({ content: errorMessage });
@@ -57,10 +118,18 @@ function ProfilePage(props) {
         const { data, status, errorMessage } = res;
         if (status) {
           console.log("data", data.user);
+
+          getProfileWs().then((res) => {
+            const { data, status, errorMessage } = res;
+            if (status) {
+              props.user.walletBTCAddress = data.user.walletBTCAddress;
+            }
+          });
           Modal.success({
             content: "Todo exitoso. Se agregó la billetera BTC",
           });
-          navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+
+          navigate("/transactions");
           return;
         } else {
           Modal.error({ content: errorMessage });
@@ -71,11 +140,19 @@ function ProfilePage(props) {
       createETHwalletWs(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
-          console.log("data", data.user);
+          getProfileWs().then((res) => {
+            const { data, status, errorMessage } = res;
+            if (status) {
+              props.user.walletETHAddress = data.user.walletETHAddress;
+              console.log("data", data.user);
+            }
+          });
+
           Modal.success({
             content: "Todo exitoso. Se agregó la billetera ETH",
           });
-          navigate("/profile"); //esto es para irnos al profile cuando te logeas/suscribes
+          navigate("/transactions");
+
           return;
         } else {
           Modal.error({ content: errorMessage });
@@ -90,59 +167,53 @@ function ProfilePage(props) {
 
   return (
     <Content className="profile-page">
-
       <Avatar
-      style={{marginBottom:20}}
+        style={{ marginBottom: 20 }}
         size={150}
         src={props.user.imageUrl}
       />
 
-<br/>
+      <br />
 
-{props.user.role === "User" ? (
-        
-        <Button type="primary" danger >
-                  <Link to="/transactions">
-                    Compra o Vende Criptos! <ShoppingCartOutlined />
-                  </Link></Button>
-        
-                
-              ) : (
-                <Button type="primary" danger>
-                  <Link to="/admin">Administración <BarChartOutlined /></Link>
-                  </Button>
-              )}
+      {props.user.role === "User" ? (
+        <Button type="primary" danger size={"large"}>
+          <Link to="/transactions">
+            Compra o Vende Criptos! <ShoppingCartOutlined />
+          </Link>
+        </Button>
+      ) : (
+        <Button type="primary" danger size={"large"}>
+          <Link to="/admin">
+            Administración <BarChartOutlined />
+          </Link>
+        </Button>
+      )}
 
       <Row gutter={[8, 8]} className="user-profile">
         <Col span={12}>
           <Descriptions bordered>
-            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Nombre">{`${props.user.firstName} ${props.user.lastName}`}</Descriptions.Item>
+            <Descriptions.Item
+              labelStyle={{ width: 180, fontWeight: "bold" }}
+              label="Nombre"
+            >{`${props.user.firstName} ${props.user.lastName}`}</Descriptions.Item>
           </Descriptions>
         </Col>
 
         <Col span={12}>
           <Descriptions bordered>
             {props.user.bankAccount ? (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Cuenta Bancaria">
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Cuenta Bancaria"
+              >
                 {props.user.bankAccount}
               </Descriptions.Item>
             ) : (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Cuenta Bancaria">
-                {noData()}
-              </Descriptions.Item>
-            )}
-          </Descriptions>
-        </Col>
-
-        <Col span={12}>
-          <Descriptions bordered>
-            {props.user.walletBTCAddress ? (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de BTC">
-                {props.user.walletBTCAddress}
-              </Descriptions.Item>
-            ) : (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de BTC">
-                {noData()}
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Cuenta Bancaria"
+              >
+                {noDataBank()}
               </Descriptions.Item>
             )}
           </Descriptions>
@@ -150,49 +221,80 @@ function ProfilePage(props) {
 
         <Col span={12}>
           <Descriptions title="" bordered>
-            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Correo electrónico">
+            <Descriptions.Item
+              labelStyle={{ width: 180, fontWeight: "bold" }}
+              label="Correo electrónico"
+            >
               {props.user.email}
             </Descriptions.Item>
           </Descriptions>
         </Col>
 
         <Col span={12}>
-          <Descriptions title="" bordered>
-            <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Rol">{props.user.role}</Descriptions.Item>
-          </Descriptions>
-        </Col>
-
-        <Col span={12}>
-          <Descriptions   bordered>
-            {props.user.walletETHAddress ? (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de ETH">
-                {props.user.walletETHAddress}
+          <Descriptions bordered>
+            {props.user.walletBTCAddress ? (
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Billetera de BTC"
+              >
+                {props.user.walletBTCAddress}
               </Descriptions.Item>
             ) : (
-              <Descriptions.Item labelStyle={{width:200,fontWeight:"bold"}} label="Billetera de ETH">
-                {noData()}
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Billetera de BTC"
+              >
+                {noDataBTC()}
               </Descriptions.Item>
             )}
           </Descriptions>
         </Col>
 
+        <Col span={12}>
+          <Descriptions title="" bordered>
+            <Descriptions.Item
+              labelStyle={{ width: 180, fontWeight: "bold" }}
+              label="Rol"
+            >
+              {props.user.role}
+            </Descriptions.Item>
+          </Descriptions>
+        </Col>
+
+        <Col span={12}>
+          <Descriptions bordered>
+            {props.user.walletETHAddress ? (
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Billetera de ETH"
+              >
+                {props.user.walletETHAddress}
+              </Descriptions.Item>
+            ) : (
+              <Descriptions.Item
+                labelStyle={{ width: 180, fontWeight: "bold" }}
+                label="Billetera de ETH"
+              >
+                {noDataETH()}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </Col>
       </Row>
 
+<div className="add-accounts">
       {/* Form for creating bank account */}
 
-      {!props.user.bankAccount ? (
+      {(!props.user.bankAccount && expandBank )? (
         <>
           <Form
             name="bank"
             labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 10,
-            }}
-            initialValues={{
-              remember: true,
-            }}
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 10,
+        }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -209,6 +311,7 @@ function ProfilePage(props) {
               ]}
             >
               <Input prefix={<DollarOutlined />} />
+              
             </Form.Item>
 
             <Form.Item
@@ -218,34 +321,37 @@ function ProfilePage(props) {
               }}
             >
               <Button type="primary" htmlType="submit">
-                Agregar
+                Registrar
               </Button>
             </Form.Item>
+
+            
           </Form>
+          <Divider/>
+          
         </>
       ) : null}
 
       {/* Form for creating BTC account*/}
 
-      {!props.user.walletBTCAddress ? (
+      {(!props.user.walletBTCAddress && expandBTC ) ? (
         <>
           <Form
             name="btc"
             labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 10,
-            }}
-            initialValues={{
-              remember: true,
-            }}
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 10,
+        }}
+ 
+      
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <Form.Item
-              label="Agrega la dirección de tu billetera que admita BTC"
+              label="Agrega dirección de billetera BTC"
               name="walletBTCAddress"
               rules={[
                 {
@@ -264,34 +370,34 @@ function ProfilePage(props) {
               }}
             >
               <Button type="primary" htmlType="submit">
-                Agregar
+                Registrar
               </Button>
             </Form.Item>
           </Form>
+          <Divider/>
         </>
       ) : null}
 
       {/* Form for creating ETH account */}
 
-      {!props.user.walletETHAddress ? (
+      {(!props.user.walletETHAddress && expandETH ) ? (
         <>
           <Form
             name="eth"
             labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 10,
-            }}
-            initialValues={{
-              remember: true,
-            }}
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 10,
+        }}
+           
+     
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <Form.Item
-              label="Agrega la dirección de tu billetera que admita ETH"
+              label="Agrega dirección de billetera ETH"
               name="walletETHAddress"
               rules={[
                 {
@@ -310,44 +416,52 @@ function ProfilePage(props) {
               }}
             >
               <Button type="primary" htmlType="submit">
-                Agregar
+                Registrar
               </Button>
             </Form.Item>
           </Form>
+          
         </>
       ) : null}
-
-
-
-<>
-<Title>Mis operaciones</Title>
+</div>
       
 
-      <Paragraph>
-        {" "}
-        Desde que te creaste la cuenta, {props.user.firstName}, has comprado {buyOperations} veces y
-        vendido {sellOperations} con nuestro servicio. Gracias por confiar en
-        nosotros.
-      </Paragraph>
+      {props.user.role !== 'Admin'?(
 
-      <Paragraph>Dale click al botón de abajo para ver todas tus operaciones.</Paragraph>
+        <>
+        <Divider />
+        <Title level={3}>Tu resumen</Title>
 
-      <Button type="primary"
-      >
-        <Link to="/operations">
-            Mira el detalle detus operaciones <BarChartOutlined />
-          </Link> 
-      </Button>
+        <Paragraph>
+          <blockquote>
+            Desde que te creaste la cuenta,{" "}
+            <b>
+              {props.user.firstName}, has comprado {buyOperations} veces y
+              vendido {sellOperations}
+            </b>{" "}
+            con nuestro servicio.
+            <br />
+            Gracias por confiar en nosotros.
+          </blockquote>
+        </Paragraph>
+        </>
 
-</>
+):null}
 
+        <Paragraph>
+          Dale click al botón de abajo para ver todas tus operaciones.
+        </Paragraph>
 
+        <Button type="primary" size={"large"}>
+          <Link to="/operations">
+            Mira el detalle de tus operaciones <BarChartOutlined />
+          </Link>
+        </Button>
+   
 
-
+      
     </Content>
   );
 }
 
 export default ProfilePage;
-
-
