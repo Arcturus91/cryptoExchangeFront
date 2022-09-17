@@ -13,3 +13,7 @@ export const addCash = (data)=> api.post("/admin/finances/addCash",data)
 export const addInventory = (data)=> api.post("/admin/inventory/buy",data)
 .then(successStatus)
 .catch(internalServerError)
+
+export const createCrypto = (data)=> api.post("/admin/inventory/create",data)
+.then(successStatus)
+.catch(internalServerError)

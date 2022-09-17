@@ -1,4 +1,4 @@
-import { getAllAssets,addInventory,addCash } from "../services/admin-ws";
+import { getAllAssets,addInventory,addCash,createCrypto } from "../services/admin-ws";
 import { Modal, Typography, Button, Col, Row, Form, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -10,6 +10,8 @@ const AdminPage = (props) => {
   const [financeObj, setFinanceObj] = useState();
   const [cashForm, setcashForm] = useState(false);
   const [addInventoryForm, setaddInventoryForm] = useState(false)
+  const [addCryptoForm, setaddCryptoForm] = useState(false)
+
 
   const addCashHandler = () => {
     setcashForm((prevState) => {
@@ -18,12 +20,19 @@ const AdminPage = (props) => {
   };
 
   const addInventoryHandler = ()=>{
-    console.log("yo soy inventory form",addInventoryForm)
     setaddInventoryForm((prevState) => {
       return !prevState;
       
     });
   }
+
+  const addNewCryptoHandler = ()=>{
+    setaddCryptoForm((prevState) => {
+      return !prevState;
+    });
+  }
+
+ 
 
   const onFinish = (values) => {
     console.log("lo que envio",values)
@@ -50,9 +59,26 @@ const AdminPage = (props) => {
         console.log("Success:", data);
         if (status) {
           Modal.success({
-            content: "Todo exitoso. Se compro la Cripto",
+            content: "Todo exitoso. Se compró la Cripto",
           });
           setaddInventoryForm((prevState) => {
+            return !prevState;
+          });
+          return;
+        } else {
+          Modal.error({ content: errorMessage });
+        }
+      })
+
+    } else if (values && addCryptoForm){
+      createCrypto(values).then((res) => {
+        const { data, status, errorMessage } = res;
+        console.log("Success:", data);
+        if (status) {
+          Modal.success({
+            content: "Todo exitoso. Se registró la Cripto",
+          });
+          setaddCryptoForm((prevState) => {
             return !prevState;
           });
           return;
@@ -69,6 +95,8 @@ const AdminPage = (props) => {
     console.log("Failed:", errorInfo);
   };
 
+
+
   useEffect(() => {
     getAllAssets().then((res) => {
       const { data, status, errorMessage } = res;
@@ -80,7 +108,7 @@ const AdminPage = (props) => {
         Modal.error({ content: errorMessage });
       }
     });
-  }, [cashForm,addInventoryForm]);
+  }, [cashForm,addInventoryForm,addCryptoForm]);
 
   return (
     <div className="admin-page">
@@ -89,8 +117,82 @@ const AdminPage = (props) => {
 <Row>
       <Title level={3}>Los activos del negocio:</Title>
 
+
+
+
+
       <InventoryTable inventory={inventory} />
 
+{/* --------------------- */}
+
+
+ <Button
+            onClick={() => {
+              addNewCryptoHandler();
+            }}
+          >
+            {" "}
+           Registrar nueva crypto{" "}
+          </Button>
+
+
+      {addCryptoForm ? (
+            <Form
+              name="addCrypto"
+              labelCol={{
+                span: 8,
+              }}
+              wrapperCol={{
+                span: 16,
+              }}
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item 
+                    rules={[
+          {
+            required: true,
+            message: "Porfavor, define la criptomoneda a registrar.",
+          },
+        ]}  
+              
+               label="Criptomoneda a registrar" name="cryptoName">
+                <Input  />
+              </Form.Item>
+              <Form.Item
+              rules={[
+          {
+            required: true,
+            message: "Porfavor, define la cantidad a comprar.",
+          },
+        ]}  
+               label="Cantidad" name="coinQuantity">
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Registrar
+                </Button>
+              </Form.Item>
+            </Form>
+          ) : null}
+
+
+
+
+
+
+{/* --------------------- */}
       <Button
             onClick={() => {
               addInventoryHandler();

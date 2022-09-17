@@ -19,6 +19,7 @@ import {
 } from "antd";
 import React, { useState } from "react";
 import { buyCripto, sellCripto,registerReceipt } from "../services/user-ws";
+import { uploadURL} from "../services/api"
 import { Link, useNavigate } from "react-router-dom";
 import {  SpotPrice } from "../components";
 const { Title, Paragraph, Text } = Typography;
@@ -81,7 +82,7 @@ function TransactionPage(props) {
 
   const configUpload = {
     name: "image",
-    action: "http://localhost:5005/api/user/my-profile/singleUpload",
+    action: uploadURL,
 
     onChange(info) {
       if (info.file.status !== "uploading") {

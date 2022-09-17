@@ -1,6 +1,6 @@
 import { btcSpot, ethSpot } from "../services/binanceApi-ws";
 import { useState, useEffect } from "react";
-import { Image, Row, Col, Typography } from "antd";
+import { Row, Col, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
