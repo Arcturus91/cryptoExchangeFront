@@ -13,3 +13,8 @@ export const api = axios.create({
     withCredentials:true,//cookies
 timeout:10000,
 })
+
+export const uploadURL = `${baseURL}/user/my-profile/singleUpload`
+
+///
+//http://localhost:5005/api/user/my-profile/singleUpload

@@ -1,11 +1,11 @@
 import { btcSpot, ethSpot } from "../services/binanceApi-ws";
 import { useState, useEffect } from "react";
-import { Button, Typography, Col, Row } from "antd";
-import { RedoOutlined } from "@ant-design/icons";
+import { Button, Typography, Col, Row, Divider } from "antd";
+import { RedoOutlined, LoadingOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-const SpotPrice = () => {
+const SpotPriceSell = () => {
   const [currentPriceBTC, setCurrentPriceBTC] = useState();
   const [currentPriceETH, setCurrentPriceETH] = useState();
 
@@ -38,17 +38,16 @@ const SpotPrice = () => {
   };
   return (
     <>
-      <Title level={2} >Los precios actuales que manejamos</Title>
+      <Title level={3} >Los precios con los que operamos:</Title>
 
 
       <Row>
 
-      <Col span={6}></Col>
-      
+      <Col span={6}/>
       <Col span={6}>
-      <Title level={3}>Bitcoin</Title>
-      <Title level={4}>
-        {currentPriceBTC}{" "}
+      <Title level={4}>Bitcoin</Title>
+      <Title level={5}>
+      {  currentPriceBTC   ? (currentPriceBTC*0.99).toFixed(2) : <LoadingOutlined />} USD
         <Button
           type="primary"
           onClick={handleBTCPriceRequest}
@@ -58,11 +57,10 @@ const SpotPrice = () => {
 
       </Col>
       <Col span={6}>
-    
+      <Title level={4}>Ethereum</Title>
+      <Title level={5}>
+      { currentPriceETH ? (currentPriceETH*0.99).toFixed(2) : <LoadingOutlined />} USD
 
-      <Title level={3}>Ethereum</Title>
-      <Title level={4}>
-       {currentPriceETH}{" "}
         <Button
           type="primary"
           onClick={handleETHPriceRequest}
@@ -71,7 +69,8 @@ const SpotPrice = () => {
       </Title>
 
       </Col>
-      <Col span={6}></Col>
+      <Col span={6}/>
+      <Divider/>
     </Row>
 
 
@@ -84,4 +83,4 @@ const SpotPrice = () => {
 
 
 
-export default SpotPrice;
+export default SpotPriceSell;
