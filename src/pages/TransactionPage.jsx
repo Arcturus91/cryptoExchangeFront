@@ -3,8 +3,7 @@ import {
   DollarOutlined,
   WalletOutlined,
   FireOutlined,
-  AppstoreOutlined,
-  ProfileOutlined,UserOutlined
+  AppstoreOutlined,UserOutlined
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -22,7 +21,7 @@ import { buyCripto, sellCripto,registerReceipt } from "../services/user-ws";
 import { uploadURL} from "../services/api"
 import { Link, useNavigate } from "react-router-dom";
 import {  SpotPrice } from "../components";
-const { Title, Paragraph, Text } = Typography;
+const { Title, Text } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Option } = Select;

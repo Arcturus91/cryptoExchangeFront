@@ -1,13 +1,13 @@
-import { Menu, Row, Col } from "antd";
+import { Menu } from "antd";
 import {
-  MailOutlined,
+  
   AppstoreOutlined,
   SmileOutlined,
-  SettingOutlined,
+  
   WalletOutlined,
   UserOutlined,
   FireOutlined,
-  LockOutlined,
+  
   DollarOutlined,
   LaptopOutlined,ShoppingCartOutlined
 } from "@ant-design/icons";
@@ -46,10 +46,11 @@ const Navbar = ({ user, handleLogout }) => (
         <Link to="/profile">Mi perfil</Link>
         </Menu.Item>
 
+        {user.role === "User" ? (
         <Menu.Item key="three" icon={<ShoppingCartOutlined />}>
         <Link to="/transactions">Compra/Vende</Link>
         </Menu.Item>
-        
+        ) : null}
 
         <Menu.Item key="four" icon={<WalletOutlined />}>
         <Link to="/operations">Mis operaciones</Link>

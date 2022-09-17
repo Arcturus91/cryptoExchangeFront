@@ -448,7 +448,7 @@ function ProfilePage(props) {
 
 ):null}
 
-        <Paragraph>
+        <Paragraph style={{color:"red"}}>
           Dale click al botón de abajo para ver todas tus operaciones.
         </Paragraph>
 
