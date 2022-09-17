@@ -176,18 +176,22 @@ const AdminPage = (props) => {
           </Col>
         
       
-
-      <Col span={24}>
+          <Col span={6} />
+      <Col span={6}>
         <Title level={5}>
           Ganancias Acumuladas:{" "}
-          {financeObj ? financeObj.profits : <LoadingOutlined />} USD
+          {financeObj ? financeObj.profits.toFixed(2) : <LoadingOutlined />} USD
         </Title>
       </Col>
 
-      <Divider/>
+      <Col span={6} >
+<Paragraph >El porcentaje de ganancia está seteado en el 1%. Aumenta el % de ganancia cuando haya mayor volatilidad en los mercados para maximizar gananacias. Redúcelo cuando requieras liquidez.</Paragraph>
+      </Col>
+      <Col span={6} />
+   
 
-
-<Col span={12}>
+      <Col span={6} />
+<Col span={6}>
         <Button type="primary"
           onClick={() => {
             addNewCryptoHandler();
@@ -255,7 +259,7 @@ const AdminPage = (props) => {
         </Col>
 
 
-<Col span={12}>
+<Col span={6}>
         <Button type="primary"
           onClick={() => {
             addInventoryHandler();
@@ -302,7 +306,7 @@ const AdminPage = (props) => {
           </Form>
         ) : null}
         </Col>
-
+        <Col span={6} />
 
 
 
