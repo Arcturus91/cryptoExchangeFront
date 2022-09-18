@@ -9,7 +9,6 @@ coinPrice: 1555.27
 coinQuantity: 41
 */ 
 
-console.log("props que llega a ltable", props)
 
 const dataInv = props.inventory
 

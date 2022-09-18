@@ -24,7 +24,7 @@ const AuthPage = (props) => {
       const { data, status, errorMessage } = res;
       //cundo yo me logee, mi back end me va a responder con data.user. Yo se que es data.user xq así lo envio desde el backend.
       if (status) {
-        console.log("data", data.user);
+       
         props.authentication(data.user);
         Modal.success({
           content:"Todo exitoso. Ya entraste"

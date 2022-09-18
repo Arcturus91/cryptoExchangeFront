@@ -14,7 +14,6 @@ const WebSocketBTC = ()=>{
         const newPriceBTC = (Number(res.data.closingPrice)).toFixed(2);
         setPriceBTC(newPriceBTC);
         setsocketCalls((prevValue) => prevValue +1);
-        console.log(newPriceBTC, socketCalls);
       }) 
 
 
@@ -23,10 +22,10 @@ const WebSocketBTC = ()=>{
   //lo que realmente está haciendo es abrir un socket cada vez que lo pide. en realidad no hay comunicación.
   // lo está abriendo y abriendo y abriendo.
 useEffect(()=>{
-  console.log("me monté")
+  
 
   return ()=>{
-    console.log("me desmonté")
+   
     stopWebSocket()
   } 
 
