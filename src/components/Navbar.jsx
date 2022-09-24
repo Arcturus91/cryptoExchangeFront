@@ -89,7 +89,7 @@ const Navbar = ({ user, handleLogout }) => (
         </Menu.Item>
 
         <Menu.Item key="contact" icon={<UserOutlined />}>
-          <Link style={{color:"white"}} to="/contact">Contacto</Link>
+          <Link style={{color:"white"}} to="/education">Educación</Link>
         </Menu.Item>
     
 

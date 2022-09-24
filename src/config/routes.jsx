@@ -1,5 +1,5 @@
 
-import {AuthPage,ProfilePage,TransactionPage,HomePage, OperationsPage, AdminPage} from '../pages'
+import {AuthPage,ProfilePage,TransactionPage,HomePage, OperationsPage, AdminPage,EducationPage,TeamPage} from '../pages'
 
 const routes = (props) => {
   return [
@@ -32,7 +32,16 @@ const routes = (props) => {
       path:"/admin",
       element:<AdminPage {...props}/>
     }
-
+    ,
+    {
+      path:"/team",
+      element:<TeamPage/>
+    }
+    ,
+    {
+      path:"/education",
+      element:<EducationPage/>
+    }
   ];
 };
 

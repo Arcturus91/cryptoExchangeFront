@@ -432,7 +432,7 @@ function TransactionPage(props) {
             textAlign: "center",
           }}
         >
-          Alpaca Exchange ©2022 Created by Arturo Barrantes
+          Alpaca Exchange ©2022 Created by {<Link to="/team">Arturo Barrantes</Link>}
         </Footer>
       </Layout>
     </Layout>
