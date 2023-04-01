@@ -18,6 +18,10 @@
 }
 
 
+
+/* Nav bar CSS */
+
+
 .nav-bar {
   background-color: rgb(0, 19, 43);
   height: 80px;
@@ -34,9 +38,18 @@
   color:white
 }
 
+
+/* Home Page CSS */
+
+
+.home-page>img{
+  width: 80%;
+  height: auto;
+}
+
 .home-page{
   background-image:url("https://zos.alipayobjects.com/rmsportal/gGlUMYGEIvjDOOw.jpg");
-  height:100vh;
+  height:100%;
   padding-top: 20px;
  
 }
@@ -44,6 +57,39 @@
 .home-page > h1, .home-page > h4 {
   color:white
 }
+
+
+
+/* Team page */
+
+.team-text {
+  color:white;
+  width: 50%;
+  text-align:justify;
+  padding: 50px;
+  font-family: 'Lexend Deca', sans-serif; 
+  margin:auto;
+  font-size: medium;
+}
+
+.team-img>img{
+  width: 20%;
+  height: auto;
+}
+/* -------------- */
+
+
+
+.education-img>img{
+  width: 60%;
+  height: auto;
+}
+
+.education-img{
+  padding-bottom: 20px;
+}
+
+/* ------- */
 
 .card-box{
 margin:10px 150px;

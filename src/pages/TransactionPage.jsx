@@ -39,7 +39,7 @@ function TransactionPage(props) {
   const [uploadVerifier, setuploadVerifier] = useState(false);
 
   const navigate = useNavigate();
-  console.log("yo soy el props", props);
+
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -52,7 +52,7 @@ function TransactionPage(props) {
       buyCripto(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
-          console.log("data", data.user);
+         
           Modal.success({
             content: "Todo exitoso. Se compró la cripto",
           });
@@ -66,7 +66,7 @@ function TransactionPage(props) {
       sellCripto(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
-          console.log("data", data.user);
+         
           Modal.success({
             content: "Todo exitoso. Se vendió la cripto",
           });
@@ -86,6 +86,7 @@ function TransactionPage(props) {
   const configUpload = {
     name: "image",
     action: uploadURL,
+    //'https:localhost:5005/api/ upload/singleFile'
 
     onChange(info) {
       if (info.file.status !== "uploading") {
@@ -93,15 +94,13 @@ function TransactionPage(props) {
       }
 
       if (info.file.status === "done") {
-        console.log("que es info", info.file.response.url.uri);
+       
 
         const receiptUrl = info.file.response.url.uri;
 
         registerReceipt({ receiptUrl }).then((res) => {
-          console.log("yo soy el res del front", res);
           const { data, status, errorMessage } = res;
           if (status) {
-            console.log("data", data.user);
             setuploadVerifier(true);
             Modal.success({
               content:
@@ -237,7 +236,7 @@ function TransactionPage(props) {
                     </span>{" "}
                     Deposita el dinero en nuestra cuenta bancaria{" "}
                     <span style={{ color: "red" }}>
-                      {props.user.bankAccount}{" "}
+                      19112345678900{" "}
                     </span>{" "}
                   </Text>
                   <br />
@@ -335,11 +334,11 @@ function TransactionPage(props) {
                     </span>{" "}
                     Envía la cripto a nuestra billetera BTC:{" "}
                     <span style={{ color: "red" }}>
-                      {props.user.walletBTCAddress}{" "}
+                    1B6n6MhWoXC94Yv8YC8v19SCaKEteKqEB7{" "}
                     </span>{" "}
                     o a nuestra billetera ETH:{" "}
                     <span style={{ color: "red" }}>
-                      {props.user.walletETHAddress}{" "}
+                    0x29a3650daa254a71846538caeb25e0b0c2fbdb05{" "}
                     </span>{" "}
                   </Text>
                   <br />
@@ -433,7 +432,7 @@ function TransactionPage(props) {
             textAlign: "center",
           }}
         >
-          Alpaca Exchange ©2022 Created by Arturo Barrantes
+          Alpaca Exchange ©2022 Created by {<Link to="/team">Arturo Barrantes</Link>}
         </Footer>
       </Layout>
     </Layout>

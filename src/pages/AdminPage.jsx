@@ -36,12 +36,12 @@ const AdminPage = (props) => {
   };
 
   const onFinish = (values) => {
-    console.log("lo que envio", values);
+    
 
     if (values && cashForm) {
       addCash(values).then((res) => {
         const { data, status, errorMessage } = res;
-        console.log("Success:", data);
+        
         if (status) {
           Modal.success({
             content: "Todo exitoso. Se agregó el cash",
@@ -57,7 +57,7 @@ const AdminPage = (props) => {
     } else if (values && addInventoryForm) {
       addInventory(values).then((res) => {
         const { data, status, errorMessage } = res;
-        console.log("Success:", data);
+        
         if (status) {
           Modal.success({
             content: "Todo exitoso. Se compró la Cripto",
@@ -73,7 +73,7 @@ const AdminPage = (props) => {
     } else if (values && addCryptoForm) {
       createCrypto(values).then((res) => {
         const { data, status, errorMessage } = res;
-        console.log("Success:", data);
+     
         if (status) {
           Modal.success({
             content: "Todo exitoso. Se registró la Cripto",

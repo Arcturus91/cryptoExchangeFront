@@ -117,7 +117,7 @@ function ProfilePage(props) {
       createBTCwalletWs(values).then((res) => {
         const { data, status, errorMessage } = res;
         if (status) {
-          console.log("data", data.user);
+        
 
           getProfileWs().then((res) => {
             const { data, status, errorMessage } = res;
@@ -144,7 +144,7 @@ function ProfilePage(props) {
             const { data, status, errorMessage } = res;
             if (status) {
               props.user.walletETHAddress = data.user.walletETHAddress;
-              console.log("data", data.user);
+              
             }
           });
 

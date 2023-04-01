@@ -6,7 +6,6 @@ const OperationsTable = (props) => {
   
   const dataBuy = props.buys;
   const roleOperations = props.role
-  console.log("yo soy props que llega a operations", props)
 
   const columnsBuy = [
     {
