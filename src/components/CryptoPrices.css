@@ -1,0 +1,36 @@
+.web-socket-comp>h1{
+color:white;
+}
+
+.crypto-prices {
+  margin: 24px 0;
+  display: flex;
+  justify-content: center;
+  }
+
+  .price-card {
+    background-image: linear-gradient(135deg, #3f51b5, #6573c3);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    width: 100%;
+    height: auto;
+  }
+
+  .cards-section{
+    justify-content: center;
+    display: flex;
+  }
+  
+  .price-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+  }
+  
+  .price {
+    margin: 0;
+  }
+  

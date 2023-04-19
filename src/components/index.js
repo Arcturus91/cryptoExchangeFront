@@ -6,3 +6,4 @@ export { default as SpotPriceSell } from "./SpotPriceSell";
 export { default as HomeSpotPrice } from "./HomeSpotPrice";
 export { default as OperationsTable } from "./OperationsTable";
 export { default as InventoryTable } from "./InventoryTable";
+export { default as LandingPage } from "./LandingPage";
