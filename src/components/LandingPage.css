@@ -1,0 +1,55 @@
+.landing-page {
+    background-image:url("https://zos.alipayobjects.com/rmsportal/gGlUMYGEIvjDOOw.jpg");
+    height:100%;
+    padding-top: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .container {
+    max-width: 800px;
+  }
+  
+  .main-title {
+    color:white;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    
+  }
+  
+  .image-container {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .image-container img {
+    border: 2px solid white;
+  }
+  
+  .description {
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    text-align: justify;
+  }  
+
+  .feature-icon {
+    font-size: 2rem;
+    color: #1890ff;
+    margin-bottom: 16px;
+  }
+  
+  .features-section >h1 {
+    color:white
+  }
+
+  .cards-container{
+    display: flex;
+    justify-content: center;
+  }
