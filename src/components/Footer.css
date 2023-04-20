@@ -1,0 +1,22 @@
+.footer {
+    background-color: rgb(31, 34, 33);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    border-top: solid white 2px;
+  }
+  
+  .icon {
+    color: white;
+    font-size: 30px;
+    margin: 0 10px;
+    transition: 0.3s;
+    padding: 0 20px;
+  }
+
+  .icon:hover {
+    color: rgb(125, 180, 200);
+    transform: translateY(-3px);
+  }
+  

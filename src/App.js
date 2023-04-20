@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import routes from "./config/routes";
 import { Routes, Route } from "react-router-dom";
-import { Navbar } from "./components";
+import { Navbar, Footer } from "./components";
 import { logoutWs } from "./services/auth-ws";
 import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
-
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,7 +35,7 @@ function App() {
       },
     });
   }
-  
+
   return (
     <div className="App">
       <Navbar user={user} handleLogout={handleLogout} />
@@ -47,12 +46,10 @@ function App() {
           )
         )}
       </Routes>
-      
 
-
+      <Footer />
     </div>
   );
 }
 
 export default App;
-
